@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SalesItem from "./SalesItem";
 
 export default function Scroller(props){
 
@@ -7,7 +8,7 @@ export default function Scroller(props){
     let lastMouseMoveUpdate;
 
     const scrollerHeight = parseInt(props.heightRemsInt) || 16;
-    const scrollerWidth = scrollerHeight * 1.5;
+    const scrollerItemWidth = scrollerHeight * 1.5;
     const scrollerMargin = scrollerHeight / 10;
 
     const onMouseMove = (e) => {
@@ -50,14 +51,7 @@ export default function Scroller(props){
         }
 
         {
-            [ ...Array(10) ].fill(<div className="sales-item">
-                <img src={"https://picsum.photos/2000/998/"}/>
-                <div className="sales-item-content">
-                    <h4>SALES ITEM</h4>
-                    <h5>$15.00</h5>
-                    <p>BRIEF DESCRIPTION ABOUT SALES ITEM</p>
-                </div>
-            </div>)
+            [ ...Array(10) ].fill(<SalesItem scrollerHeight={scrollerHeight} scrollerItemWidth={scrollerItemWidth} scrollerMargin={scrollerMargin} />)
         } 
 
         <div className="scroller-end-bumper">|</div>
@@ -88,37 +82,8 @@ export default function Scroller(props){
                 white-space: nowrap;
                 top: 0;
                 width: 0;
-                left: ${scrollerMargin}rem;
+                left: ${scrollerMargin + 0.5}rem;
                 text-align: center;
-            }
-            .sales-item {
-                transition: 0.25s;
-                background-color: #ddd;
-                display: block;
-                margin-right: ${scrollerMargin}rem; margin-left: ${scrollerMargin}rem;
-                height: ${scrollerHeight}rem;
-                width: ${scrollerWidth}rem;
-            }
-            .sales-item img {
-                transition: 0.25s;
-                width: inherit;
-                height: inherit;
-                object-fit: cover;
-            }
-            .sales-item-content {
-                background-color: black;
-                mix-blend-mode: luminosity;
-                color: #fff;
-                transition: 0.25s;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                position: absolute;
-                width: inherit;
-                height: inherit;
-                padding: 1rem;
-                bottom: 0;
-                opacity: 0;
             }
             .scroller-end-bumper {
                 display: block;
@@ -126,62 +91,8 @@ export default function Scroller(props){
                 width: ${scrollerMargin * 2}rem;
                 opacity: 0;
             }
-            @media only screen and (min-width: 1601px) {
-                @media (hover: hover) and (pointer: fine) {
-                    .sales-item img:hover {
-                        transition: 0.25s;
-                        height: ${scrollerHeight+2}rem;
-                    }
-                    .sales-item:hover {
-                        transition: 0.25s;
-                        width: ${scrollerWidth + scrollerMargin}rem;
-                        margin-left: ${scrollerMargin / 2}rem; margin-right: ${scrollerMargin / 2}rem;
-                    }
-                    .sales-item-content:hover {
-                        transition: 0.25s;
-                        padding: 2.25rem;
-                        opacity: 0.6;
-                    }
-                }
-            }
-            @media only screen and (max-width: 1600px) {
-                .sales-item {
-                    width: 21rem;
-                    margin-left: 1rem;
-                    margin-right: 1rem;
-                }
-                @media (hover: hover) and (pointer: fine) {
-                    .sales-item img:hover {
-                        transition: 0.25s;
-                        height: ${scrollerHeight+2}rem;
-                    }
-                    .sales-item:hover {
-                        transition: 0.25s;
-                        width: 22rem;
-                        margin-left: 0.5rem; margin-right: 0.5rem;
-                    }
-                    .sales-item-content:hover {
-                        transition: 0.25s;
-                        padding: 1.5rem;
-                        opacity: 0.6;
-                    }
-                }
-            }
-            @media only screen and (max-width: 1200px) {
-                .sales-item {
-                    width: 20rem;
-                }
-            }
-            @media only screen and (max-width: 600px) {
-                .sales-item {
-                    width: 19rem;
-                }
-            }
-            @media only screen and (min-width: 1000px) {
-                h3 {
-                    transition: 0.25s;
-                    left: 5rem;
-                }
+            @media only screen and (max-width: 900px) {
+
             }
         `}</style>
     </div>)
