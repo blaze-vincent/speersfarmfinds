@@ -3,17 +3,18 @@ import { useState, useEffect } from 'react';
 
 export default function Layout( props ) {
 
-    const [grabberMode, setGrabberMode] = useState(false);
+    // const [grabberMode, setGrabberMode] = useState(false);
+    const grabberMinWidth = 1200;
 
-    const scrollerListen = () => {
-        console.log(getComputedStyle(document.querySelector('#grab-mode-detector')).backgroundColor  === "rgb(0, 0, 0)");
-    }
-    useEffect(()=> {
-        scrollerListen();
-    }, []);
-    useEffect(()=> {
-        window.addEventListener('resize', scrollerListen);
-    }, []);
+    // const scrollerListen = () => {
+    //     setGrabberMode(window.innerWidth > grabberMinWidth);
+    // }
+    // useEffect(()=> {
+    //     scrollerListen();
+    // }, []);
+    // useEffect(()=> {
+    //     window.addEventListener('resize', scrollerListen);
+    // }, []);
 
     return(<div id="layout">
         <style jsx>{`   
@@ -35,7 +36,7 @@ export default function Layout( props ) {
 
             #grab-mode-detector { background-color: white; display: none;}
 
-            @media only screen and (max-width: 900px) {
+            @media only screen and (max-width: ${grabberMinWidth}) {
                 #grab-mode-detector { background-color: black; }
             }
         `}</style>

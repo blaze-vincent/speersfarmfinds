@@ -1,18 +1,30 @@
 import Link from "next/link";
 import SalesItem from "./SalesItem";
+import { useRef } from 'react';
 
 export default function Scroller(props){
 
     let touchCaptured = false;
+    let grabCaptured = false;
+    let grabClientXIn = 0;
+    let grabClientScrollPos = 0;
+
+    let thisRef = useRef(null);
+
     const millisecondConstraint = 50;
     let lastMouseMoveUpdate;
 
     const scrollerHeight = parseInt(props.heightRemsInt) || 16;
+
     const scrollerItemWidth = scrollerHeight * 1.5;
     const scrollerMargin = scrollerHeight / 10;
+    const scrollerWidth = "100vw";
+
+    const grabberMinWidth = 1200;
 
     const onMouseMove = (e) => {
-        if(window.innerWidth > 900){
+
+        if(window.innerWidth >= grabberMinWidth){
             lastMouseMoveUpdate = lastMouseMoveUpdate || e.timeStamp;
             if( e.timeStamp - lastMouseMoveUpdate < millisecondConstraint ){ return } //delay prevents funky smooth scroll behavior and saves some cpu
             if(!touchCaptured){
@@ -20,31 +32,57 @@ export default function Scroller(props){
                 while(!e.target.className.includes("scroller")){
                     e.target = e.target.parentNode;
                 }
-    
-                const scrollerDiv = e.target;
-                const maxScroll = scrollerDiv.scrollWidth - scrollerDiv.clientWidth;
+                const maxScroll = thisRef.current.scrollWidth - thisRef.current.clientWidth;
                 //correlate scrollbar position with cursor position in div
-                const scrollInBounds = ((e.clientX - .1*maxScroll)/(scrollerDiv.clientWidth - (.2*maxScroll)))*maxScroll    
+                const scrollInBounds = ((e.clientX - .1*maxScroll)/(thisRef.current.clientWidth - (.2*maxScroll)))*maxScroll    
     
-                scrollerDiv.scroll({
+                thisRef.current.scroll({
                     left: scrollInBounds,
                     behavior: 'smooth'
                 });
                 lastMouseMoveUpdate = e.timeStamp;
             }
+        } else
+        if (grabCaptured) { 
+            
+            const dx = grabClientXIn - e.clientX;
+
+            thisRef.current.scrollLeft = grabClientScrollPos + dx*3;
+
+            //grabClientXIn = thisRef.current.scrollLeft;
+            
         }
     }
 
-    const onTouchStart = (e) => {
+    const touchToggle = (e) => {
         e.preventDefault();
-        touchCaptured = true;
-    }
-    const onTouchEnd = (e) => {
-        e.preventDefault();
-        touchCaptured = false;
+        touchCaptured = !touchCaptured;
     }
 
-    return (<div className="scroller" onMouseMove={onMouseMove} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    const grabStart = e => {
+        e.preventDefault();
+        grabCaptured = true;
+        setCursor();
+        grabClientXIn = e.clientX;
+        grabClientScrollPos = thisRef.current.scrollLeft;
+    }
+    const grabEnd = e => {
+        e.preventDefault();
+        grabCaptured = false;
+        setCursor();
+    }
+    const setCursor = () => {
+        if(parseInt(getComputedStyle(thisRef.current).width, 10) < grabberMinWidth && grabCaptured){
+            thisRef.current.style.cursor = "grabbing";
+        } else if(parseInt(getComputedStyle(thisRef.current).width, 10) < grabberMinWidth){
+            thisRef.current.style.cursor = "grab";
+        }else {
+            thisRef.current.style.cursor = "default";
+        }
+    }
+
+    return (<div className="scroller" onMouseMove={onMouseMove} onTouchStart={touchToggle} onTouchEnd={touchToggle} onMouseDownCapture={grabStart} onMouseUpCapture={grabEnd} onMouseLeave={grabEnd} onMouseEnter={setCursor} ref={thisRef}>
+
         {props.titleLink
          ? <Link href={props.titleLink}><h3 className="link">{props.title}</h3></Link>
          : <h3>{props.title}</h3>
@@ -58,11 +96,12 @@ export default function Scroller(props){
 
         <style jsx>{`
             .scroller {
+                cursor: "default";
                 position: relative;
                 display: flex;
                 overflow-x: scroll;
                 overflow-y: hidden;
-                width: 100vw;
+                ${scrollerWidth};
                 height: ${scrollerHeight}rem;
                 margin-top: 1rem;
             }
@@ -90,9 +129,6 @@ export default function Scroller(props){
                 position: relative;
                 width: ${scrollerMargin * 2}rem;
                 opacity: 0;
-            }
-            @media only screen and (max-width: 900px) {
-
             }
         `}</style>
     </div>)
