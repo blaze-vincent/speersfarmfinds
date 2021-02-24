@@ -4,11 +4,14 @@ export default function SalesItem(props){
     const [isSelected, setSelected] = useState(false);
     const toggleSelected = () => setSelected(!isSelected);
 
+    let swiping = false;
+
     return (<div 
         className={`sales-item ${isSelected ? "selected" : ""}`} 
         onMouseEnter={toggleSelected} 
         onMouseLeave={toggleSelected} 
-        onTouchStart={toggleSelected}
+        onTouchMove={()=>{swiping = true}}
+        onTouchEnd={()=>{ if(!swiping){toggleSelected()} else {swiping = false}}}
     >
         <img src={"https://picsum.photos/2000/998/"}/>
         <div className={`sales-item-content ${isSelected ? "selected" : ""}`}>

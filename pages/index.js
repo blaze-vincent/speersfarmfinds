@@ -5,7 +5,6 @@ export default function Home() {
   return (
     <div id="home-container">
       <Layout>
-        <h2>Store Highlights</h2>
         <Scroller title="Fresh flowers" titleLink="/flowers" heightRemsInt="18"/>
         <Scroller title="Farmhouse primitive" titleLink="/decor" heightRemsInt="16"/>
         <Scroller title="Gift Miscellanea" titleLink="/gifts" heightRemsInt="14"/>

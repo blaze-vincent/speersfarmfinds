@@ -8,18 +8,12 @@ export default function Layout( props ) {
         <style jsx>{`   
             #layout {
                 background-color: #222;
-                color: white;
+                color: #ddd;
                 display: block;
                 overflow-x: hidden;
                 overflow-y: scroll;
                 width: 100vw;
                 height: 100vh;
-            }
-            footer {
-                display: block;
-                position: relative;
-                width: 100%;
-                height: 2rem;
             }
 
             #grab-mode-detector { background-color: white; display: none;}
@@ -27,14 +21,21 @@ export default function Layout( props ) {
             @media only screen and (max-width: ${grabberMinWidth}) {
                 #grab-mode-detector { background-color: black; }
             }
+
+            footer {
+                display: block;
+                position: relative;
+                height: 1rem;
+                width: 100vw;
+                content: "";
+            }
         `}</style>
         <div id="grab-mode-detector" />
 
         <Navbar />
-        {props.children}
-        <footer>
 
-        </footer>
+        {props.children}
+        <footer />
     </div>);
 }
 

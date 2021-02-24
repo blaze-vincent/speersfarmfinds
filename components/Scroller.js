@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SalesItem from "./SalesItem";
-import { useState, useRef, useEffect } from 'react';
+import { useRef } from 'react';
 
 export default function Scroller(props){
 
@@ -24,7 +24,7 @@ export default function Scroller(props){
         scrollerItemWidth = scrollerHeight * 1.5;
         scrollerMargin = scrollerHeight / 10;
     }
-    setVariableDimensions(props.scrollerHeight || 16);
+    setVariableDimensions(props.heightRemsInt || 16);
 
     const grabberMinWidth = 1200;
 
