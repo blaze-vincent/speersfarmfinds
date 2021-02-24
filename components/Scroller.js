@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SalesItem from "./SalesItem";
-import { useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Scroller(props){
 
@@ -14,11 +14,17 @@ export default function Scroller(props){
     const millisecondConstraint = 50;
     let lastMouseMoveUpdate;
 
-    const scrollerHeight = parseInt(props.heightRemsInt) || 16;
-
-    const scrollerItemWidth = scrollerHeight * 1.5;
-    const scrollerMargin = scrollerHeight / 10;
+    let scrollerHeight;
+    let scrollerItemWidth;
+    let scrollerMargin;
     const scrollerWidth = "100vw";
+
+    const setVariableDimensions = (scrollerItemHeight) => {
+        scrollerHeight = scrollerItemHeight;
+        scrollerItemWidth = scrollerHeight * 1.5;
+        scrollerMargin = scrollerHeight / 10;
+    }
+    setVariableDimensions(props.scrollerHeight || 16);
 
     const grabberMinWidth = 1200;
 
@@ -48,8 +54,6 @@ export default function Scroller(props){
             const dx = grabClientXIn - e.clientX;
 
             thisRef.current.scrollLeft = grabClientScrollPos + dx*3;
-
-            //grabClientXIn = thisRef.current.scrollLeft;
             
         }
     }

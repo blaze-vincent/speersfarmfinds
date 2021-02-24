@@ -1,20 +1,8 @@
 import Navbar from '../components/Navbar';
-import { useState, useEffect } from 'react';
 
 export default function Layout( props ) {
 
-    // const [grabberMode, setGrabberMode] = useState(false);
     const grabberMinWidth = 1200;
-
-    // const scrollerListen = () => {
-    //     setGrabberMode(window.innerWidth > grabberMinWidth);
-    // }
-    // useEffect(()=> {
-    //     scrollerListen();
-    // }, []);
-    // useEffect(()=> {
-    //     window.addEventListener('resize', scrollerListen);
-    // }, []);
 
     return(<div id="layout">
         <style jsx>{`   

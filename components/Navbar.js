@@ -38,6 +38,11 @@ export default function Navbar(){
             h1 {
                 text-align: center;
             }
+            @media (pointer: coarse), (pointer: fine) {
+                a:hover {
+                    text-decoration: underline;
+                }
+            }
         `}</style>
 
         <div id="title">

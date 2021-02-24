@@ -4,7 +4,12 @@ export default function SalesItem(props){
     const [isSelected, setSelected] = useState(false);
     const toggleSelected = () => setSelected(!isSelected);
 
-    return (<div className={`sales-item ${isSelected ? "selected" : ""}`} onMouseEnter={toggleSelected} onMouseLeave={toggleSelected}>
+    return (<div 
+        className={`sales-item ${isSelected ? "selected" : ""}`} 
+        onMouseEnter={toggleSelected} 
+        onMouseLeave={toggleSelected} 
+        onTouchStart={toggleSelected}
+    >
         <img src={"https://picsum.photos/2000/998/"}/>
         <div className={`sales-item-content ${isSelected ? "selected" : ""}`}>
             <h4>SALES ITEM</h4>
@@ -55,6 +60,19 @@ export default function SalesItem(props){
                 transition: 0.25s;
                 padding: 2.25rem;
                 opacity: 0.6;
+            }
+            @media only screen and (max-width: 500px){
+                .sales-item {
+                    margin-right: 5vw; margin-left: 5vw;
+                    width: 90vw;
+                }
+                .sales-item.selected {
+                    width: 95vw;
+                    margin-left: 2.5vw; margin-right: 2.5vw;
+                }
+                .sales-item-content.selected {
+                    padding: 1.5rem;
+                }
             }
         `}</style>
     </div>)
