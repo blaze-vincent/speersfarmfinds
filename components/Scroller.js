@@ -1,8 +1,11 @@
 import Link from "next/link";
 import SalesItem from "./SalesItem";
 import { useRef } from 'react';
+import { connectToDatabase } from "mongodb";
 
 export default function Scroller(props){
+
+    console.log(getServerSideProps("flower").salesItems);
 
     let touchCaptured = false;
     let grabCaptured = false;
@@ -93,7 +96,7 @@ export default function Scroller(props){
         }
 
         {
-            [ ...Array(10) ].fill(<SalesItem scrollerHeight={scrollerHeight} scrollerItemWidth={scrollerItemWidth} scrollerMargin={scrollerMargin} />)
+            /*Array.from(getServerSideProps("flower").salesItems).map(item => {<SalesItem scrollerHeight={scrollerHeight} scrollerItemWidth={scrollerItemWidth} scrollerMargin={scrollerMargin} />})*/
         } 
 
         <div className="scroller-end-bumper">|</div>
@@ -136,4 +139,19 @@ export default function Scroller(props){
             }
         `}</style>
     </div>)
+}
+
+export async function getServerSideProps(type) {
+    const { db } = await connectToDatabase();
+    
+    const salesItems = await db
+      .collection("salesitems")
+      .find({"type": type})
+      .limit(10)
+      .toArray();
+    return {
+        props: {
+            salesItems: JSON.parse(JSON.stringify(salesItems))
+        } 
+    }
 }

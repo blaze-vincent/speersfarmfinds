@@ -2,6 +2,7 @@ import Layout from '../components/Layout';
 import Scroller from '../components/Scroller';
 
 export default function Home() {
+
   return (
     <div id="home-container">
       <Layout>
@@ -20,3 +21,4 @@ export default function Home() {
     </div>
   )
 }
+
