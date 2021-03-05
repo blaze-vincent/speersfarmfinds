@@ -9,6 +9,7 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post((req, res) => {
+    
     passwordsMatch(req.body.password).then(match => {
         if(match){
             res.json({token: jwt.sign({
