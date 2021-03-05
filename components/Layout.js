@@ -5,7 +5,7 @@ export default function Layout( props ) {
     const grabberMinWidth = 1200;
 
     return(<div id="layout">
-        <style jsx>{`   
+        <style jsx>{`
             #layout {
                 background-color: #222;
                 color: #ddd;
@@ -32,7 +32,7 @@ export default function Layout( props ) {
         `}</style>
         <div id="grab-mode-detector" />
 
-        <Navbar />
+        <Navbar noContact={props.noContact ? props.noContact : ""} />
 
         {props.children}
         <footer />

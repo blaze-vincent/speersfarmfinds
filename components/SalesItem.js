@@ -1,10 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SalesItem(props){
+
+    const [authorized, setAuthorized] = useState(false);
+    const [itemDeleted, setItemDeleted] = useState(false);
+
     const [isSelected, setSelected] = useState(false);
     const toggleSelected = () => setSelected(!isSelected);
 
     let swiping = false;
+
+    useEffect(() => {
+        if(document.cookie[1]){
+            setAuthorized(true);
+        }
+    }, [])
+
+    const deleteItem = async (itemImgUrl) => {
+        await fetch('/api/upload', {
+            method: 'DELETE', 
+            headers: {'Content-Type':'application/json'}, 
+            body: JSON.stringify({
+                itemImgUrl,
+                token: document.cookie
+            })
+        }).then(response => {
+            console.log(response);
+        })
+    }
 
     return (<div 
         className={`sales-item ${isSelected ? "selected" : ""}`} 
@@ -13,11 +36,28 @@ export default function SalesItem(props){
         onTouchMove={()=>{swiping = true}}
         onTouchEnd={()=>{ if(!swiping){toggleSelected()} else {swiping = false}}}
     >
-        <img src={"https://picsum.photos/2000/998/"}/>
+        <img src={props.data ? props.data.imgUrl : "https://picsum.photos/2000/998/"}/>
         <div className={`sales-item-content ${isSelected ? "selected" : ""}`}>
-            <h4>SALES ITEM</h4>
-            <h5>$15.00</h5>
-            <p>BRIEF DESCRIPTION ABOUT SALES ITEM</p>
+            {itemDeleted ? (
+                <p>(item deleted, will disappear upon reload)</p>
+            ) : ""}
+            <h4>{props.data? props.data.name : "SALES ITEM"}</h4>
+            <h5>{props.data? props.data.price : "$15.00"}</h5>
+            <p>{props.data? props.data.description : "BRIEF DESCRIPTION OF PRODUCT"}</p>
+            {authorized ? !itemDeleted ? (
+                <button onClick={e => {
+                    if(itemDeleted){return}
+                    deleteItem(e.target.parentNode.previousSibling.src)
+                    setItemDeleted(true);
+                }}
+                onTouchEnd={e => {
+                    if(!swiping){
+                        if(itemDeleted){return}
+                        deleteItem(e.target.parentNode.previousSibling.src)
+                        setItemDeleted(true);
+                    }
+                }}>delete item</button>
+            ) : "" : ""}
         </div>
 
         <style jsx>{`
@@ -76,6 +116,14 @@ export default function SalesItem(props){
                 .sales-item-content.selected {
                     padding: 1.5rem;
                 }
+            }
+            button {
+                z-index: 1000;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 5rem;
+                margin: 1rem;
             }
         `}</style>
     </div>)

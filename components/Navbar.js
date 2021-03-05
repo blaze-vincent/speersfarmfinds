@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default function Navbar(){
+export default function Navbar(props){
 
     return (<div id="navbar-contact-shared-container">
         <style jsx>{`
@@ -95,17 +95,19 @@ export default function Navbar(){
                 </Link>
             </div>
         </div>
-        <div id="contact-container">
-            <h2>Contact</h2>
-            <Link href="tel:319-837-8107">
-                <a>(319) 837-8107</a>
-            </Link>
-            <Link href="mailto:ktzspeer@hotmail.com">
-                <a>ktzspeer@hotmail.com</a>
-            </Link>
-            <Link href="https://www.facebook.com/Speers-Farm-Finds-Gift-Boutique-100174395369762/">
-                <a>Facebook</a>
-            </Link>
-        </div>
+        {!props.noContact ? (
+            <div id="contact-container">
+                <h2>Contact</h2>
+                <Link href="tel:319-837-8107">
+                    <a>(319) 837-8107</a>
+                </Link>
+                <Link href="mailto:ktzspeer@hotmail.com">
+                    <a>ktzspeer@hotmail.com</a>
+                </Link>
+                <Link href="https://www.facebook.com/Speers-Farm-Finds-Gift-Boutique-100174395369762/">
+                    <a>Facebook</a>
+                </Link>
+            </div>
+        ) : ""}
     </div>)
 }
