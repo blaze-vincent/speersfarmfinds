@@ -3,7 +3,6 @@ import SalesItem from '../models/salesItem';
 import AdminLogin from '../models/adminlogin';
 import crypto from 'crypto';
 import fs from 'fs';
-import path from 'path';
 
 export async function dbconnect(){
     if(mongoose.connection.readyState >= 1) return;

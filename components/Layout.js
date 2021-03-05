@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import Head from 'next/head';
 
 export default function Layout( props ) {
 
@@ -30,6 +31,12 @@ export default function Layout( props ) {
                 content: "";
             }
         `}</style>
+
+        <Head>
+            <title>Speer's Farm Finds</title>
+            <meta name="keywords" content="boutique, flowers, bouquets, farmhouse primitive, gifts" />
+            <meta name="description" content="Speer's Farm Finds & Gift Boutique. View all items available for purchase."/>
+        </Head>
         <div id="grab-mode-detector" />
 
         <Navbar noContact={props.noContact ? props.noContact : ""} />
